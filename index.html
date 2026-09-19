@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naya Blue</title>
+
+    <!-- Favicon - Ícone na aba do navegador -->
+    <link rel="icon" type="image/png" href="logo-naya-blue.png">
+    <link rel="shortcut icon" type="image/png" href="logo-naya-blue.png">
+    <link rel="apple-touch-icon" href="logo-naya-blue.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <!-- OPÇÃO 1: Logo como imagem com texto ao lado (RECOMENDADO) -->
+                <img src="logo-naya-blue.png" alt="Naya Blue" class="logo-img">
+                <!-- <div class="brand-text">
+                    <span class="brand-name">NAYA BLUE</span>
+                    <span class="brand-tagline">ELEGÂNCIA & ESTILO</span>
+                </div> -->
+
+                <!-- OPÇÃO 2: Ícone com texto ao lado (atual) 
+                <i class="fas fa-gem logo-icon"></i> -->
+                <div class="brand-text">
+                    <span class="brand-name">NAYA BLUE</span>
+                    <span class="brand-tagline">ELEGÂNCIA & ESTILO</span>
+                </div>
+            </a>
+            <button class="navbar-toggler position-relative" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+                <span class="cart-badge" id="cartCountMobile">0</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categorias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Produtos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contato</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="#" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container text-center">
+            <h1>Elegância que Começa com Sutileza</h1>
+            <p>Descubra as melhores joias, rasteirinhas, óculos e bolsas</p>
+            <button class="btn btn-hero"
+                onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">
+                Explore Agora
+            </button>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossas Categorias</h2>
+                <p>Produtos selecionados especialmente para você</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 col-sm-6">
+                    <div class="category-card" data-cat="joias" onclick="filterCategory('joias')">
+                        <div class="category-icon"><i class="fas fa-gem"></i></div>
+                        <h3>Joias</h3>
+                        <p>Brilho e sofisticação</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="category-card" data-cat="rasteirinhas" onclick="filterCategory('rasteirinhas')">
+                        <div class="category-icon"><i class="fas fa-shoe-prints"></i></div>
+                        <h3>Rasteirinhas</h3>
+                        <p>Conforto e estilo</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="category-card" data-cat="oculos" onclick="filterCategory('oculos')">
+                        <div class="category-icon"><i class="fas fa-glasses"></i></div>
+                        <h3>Óculos</h3>
+                        <p>Proteção com elegância</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="category-card" data-cat="bolsas" onclick="filterCategory('bolsas')">
+                        <div class="category-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <h3>Bolsas</h3>
+                        <p>Estilo e praticidade</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2 id="sectionTitle">Produtos em Destaque</h2>
+                <p id="sectionSubtitle">As melhores ofertas para você</p>
+            </div>
+            <div class="row" id="productList">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div class="modal modal-checkout fade" id="checkoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 520px;">
+            <div class="modal-content" style="border-radius: 15px; overflow: hidden; border: none;">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-lock"></i> Finalizar Pedido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator" id="stepIndicator">
+                        <div class="step active" id="stepLabel1"><span class="step-number">1</span> Entrega</div>
+                        <div class="step-line" id="stepLine1"></div>
+                        <div class="step" id="stepLabel2"><span class="step-number">2</span> Dados</div>
+                        <div class="step-line" id="stepLine2"></div>
+                        <div class="step" id="stepLabel3"><span class="step-number">3</span> Confirmação</div>
+                    </div>
+
+                    <!-- STEP 1: Delivery Method -->
+                    <div class="checkout-step active" id="step1">
+                        <div class="order-summary-mini" id="summaryStep1"></div>
+                        <label style="font-weight:600; color: var(--azul-escuro); font-size:0.9rem;">Como deseja receber
+                            seu pedido?</label>
+                        <div class="payment-options" style="margin-bottom: 1rem;">
+                            <div class="payment-option selected" onclick="selectDelivery(this, 'retirada')">
+                                <input type="radio" name="delivery" checked>
+                                <div class="payment-option-icon" style="color: #10B981;"><i class="fas fa-store"></i>
+                                </div>
+                                <div class="payment-option-text">
+                                    <h6>Retirar na Loja</h6>
+                                    <small>Grátis - Bairro do Marco</small>
+                                </div>
+                            </div>
+                            <div class="payment-option" onclick="selectDelivery(this, 'entrega')">
+                                <input type="radio" name="delivery">
+                                <div class="payment-option-icon" style="color: #3B82F6;"><i class="fas fa-truck"></i>
+                                </div>
+                                <div class="payment-option-text">
+                                    <h6>Entrega em Domicílio</h6>
+                                    <small>Calcularemos o frete do seu bairro</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Store Address (shown when retirada is selected) -->
+                        <div id="storeAddressInfo"
+                            style="background: #F0FDF4; border: 2px solid #10B981; border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+                            <h6 style="color: #047857; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                <i class="fas fa-map-marker-alt"></i> Endereço da Loja
+                            </h6>
+                            <p style="margin: 0; font-size: 0.85rem; color: #065F46; line-height: 1.5;">
+                                <strong>Bairro do Marco</strong><br>
+                                Passagem Olímpia, nº 59<br>
+                                Entre Almirante Barroso e Rômulo Maiorana<br>
+                                CEP: 66093-220 - Belém/PA
+                            </p>
+                        </div>
+
+                        <!-- Delivery Options (shown when entrega is selected) -->
+                        <div id="deliveryOptions" style="display: none;">
+                            <label>Selecione seu bairro para calcular o frete:</label>
+                            <select class="form-control" id="bairroSelect" onchange="updateFretePreview()">
+                                <option value="">Selecione seu bairro...</option>
+                                <!-- Bairros ordenados por distância da loja (Bairro do Marco) -->
+                                <option value="5.00">Marco</option>
+                                <option value="7.00">São Brás</option>
+                                <option value="8.00">Pedreira</option>
+                                <option value="8.00">Fátima</option>
+                                <option value="8.00">Canudos</option>
+                                <option value="9.00">Nazaré</option>
+                                <option value="10.00">Umarizal</option>
+                                <option value="10.00">Batista Campos</option>
+                                <option value="10.00">Cremação</option>
+                                <option value="11.00">Reduto</option>
+                                <option value="12.00">Campina</option>
+                                <option value="12.00">Terra Firme</option>
+                                <option value="12.00">Souza</option>
+                                <option value="13.00">Cidade Velha</option>
+                                <option value="13.00">Jurunas</option>
+                                <option value="13.00">Condor</option>
+                                <option value="13.00">Guamá</option>
+                                <option value="13.00">Telégrafo</option>
+                                <option value="13.00">Una</option>
+                                <option value="13.00">Marambaia</option>
+                                <option value="14.00">Maracangalha</option>
+                                <option value="14.00">Sacramenta</option>
+                                <option value="15.00">Barreiro</option>
+                                <option value="17.00">Bengui</option>
+                                <option value="17.00">Cabanagem</option>
+                                <option value="17.00">Castanheira</option>
+                                <option value="17.00">Val-de-Cães</option>
+                                <option value="18.00">Parque Verde</option>
+                                <option value="18.00">Curió-Utinga</option>
+                                <option value="18.00">Mangueirão</option>
+                                <option value="19.00">Coqueiro</option>
+                                <option value="19.00">Águas Lindas</option>
+                                <option value="19.00">Pratinha</option>
+                                <option value="21.00">Aurá</option>
+                                <option value="22.00">Tapanã</option>
+                                <option value="25.00">Tenoné</option>
+                                <option value="27.00">Icoaraci</option>
+                                <option value="28.00">Cruzeiro (Icoaraci)</option>
+                                <option value="28.00">Agulha (Icoaraci)</option>
+                                <option value="28.00">Águas Negras (Icoaraci)</option>
+                                <option value="28.00">Campina de Icoaraci</option>
+                                <option value="28.00">Antônio Lemos</option>
+                                <option value="30.00">Paracuri (Icoaraci)</option>
+                                <option value="30.00">Ponta Grossa (Icoaraci)</option>
+                                <option value="30.00">Parque Guajará</option>
+                                <option value="31.00">Maracacuera (Icoaraci)</option>
+                                <!-- Ananindeua — ordenados por frete -->
+                                <option value="19.00">Coqueiro (Ananindeua)</option>
+                                <option value="21.00">Centro (Ananindeua)</option>
+                                <option value="21.00">Guanabara (Ananindeua)</option>
+                                <option value="21.00">Levilândia (Ananindeua)</option>
+                                <option value="21.00">Aurá - Divisa (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova I (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova II (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova III (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova IV (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova V (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova VI (Ananindeua)</option>
+                                <option value="22.00">Cidade Nova VII (Ananindeua)</option>
+                                <option value="22.00">Distrito Industrial (Ananindeua)</option>
+                                <option value="22.00">Una (Ananindeua)</option>
+                                <option value="23.00">Atalaia (Ananindeua)</option>
+                                <option value="23.00">Maguari (Ananindeua)</option>
+                                <option value="23.00">Heliolândia (Ananindeua)</option>
+                                <option value="25.00">40 Horas (Ananindeua)</option>
+                                <option value="25.00">Águas Brancas (Ananindeua)</option>
+                                <option value="26.00">Icuí-Guajará (Ananindeua)</option>
+                                <option value="26.00">Curuçambá (Ananindeua)</option>
+                                <option value="27.00">Jaderlândia (Ananindeua)</option>
+                                <option value="28.00">Paar (Ananindeua)</option>
+                                <option value="28.00">PAAR - Conjunto (Ananindeua)</option>
+                            </select>
+                            <div id="fretePreview"
+                                style="margin-top: 1rem; padding: 1rem; background: #EFF6FF; border-radius: 8px; display: none;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #1E40AF; font-weight: 600;">
+                                        <i class="fas fa-truck"></i> Valor do Frete:
+                                    </span>
+                                    <span style="color: #1E40AF; font-size: 1.2rem; font-weight: bold;"
+                                        id="freteValue">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-next" onclick="goToStep(2)">Continuar <i
+                                class="fas fa-arrow-right"></i></button>
+                    </div>
+
+                    <!-- STEP 2: Customer Data -->
+                    <div class="checkout-step" id="step2">
+                        <div class="order-summary-mini" id="summaryStep2"></div>
+                        <div class="checkout-form">
+                            <label>Nome Completo</label>
+                            <input type="text" class="form-control mb-3" id="custName" placeholder="Ex: Maria da Silva">
+                            <label>Telefone / WhatsApp</label>
+                            <input type="tel" class="form-control mb-3" id="custPhone"
+                                placeholder="Ex: (91) 99377-7788">
+                            <div id="addressFields">
+                                <label>Endereço Completo</label>
+                                <input type="text" class="form-control mb-3" id="custAddress"
+                                    placeholder="Ex: Rua Exemplo, 123, Ap 45">
+                                <label>Ponto de Referência</label>
+                                <input type="text" class="form-control" id="custReference"
+                                    placeholder="Ex: Próximo ao supermercado">
+                            </div>
+                        </div>
+                        <button class="btn-next" onclick="goToStep(3)">Confirmar Pedido <i
+                                class="fas fa-check"></i></button>
+                        <button class="btn-back" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    </div>
+
+                    <!-- STEP 3: Confirmation -->
+                    <div class="checkout-step" id="step3">
+                        <div class="verification-box">
+                            <h5><i class="fas fa-shield-alt"></i> Código de Segurança do Pedido</h5>
+                            <div class="verification-code" id="verificationCode">------</div>
+                        </div>
+                        <div class="security-info">
+                            <p><i class="fas fa-info-circle"></i> <strong>Guarde este código!</strong></p>
+                            <ul>
+                                <li>Seu pedido foi salvo com segurança</li>
+                                <li>Use este código para rastrear seu pedido</li>
+                                <li>A Naya Blue pode verificar em qualquer dispositivo</li>
+                            </ul>
+                        </div>
+                        <div class="success-screen">
+                            <div class="success-icon"><i class="fas fa-check"></i></div>
+                            <h4>Pedido Confirmado!</h4>
+                            <p>Seu pedido foi enviado com segurança.<br>Em breve você receberá o link de pagamento do
+                                Mercado Pago.</p>
+                            <button class="success-whatsapp" onclick="openWhatsApp()">
+                                <i class="fab fa-whatsapp"></i> Abrir WhatsApp
+                            </button><br>
+                            <button class="success-close" onclick="finishOrder()">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Screenshot Template -->
+    <div id="orderScreenshot" style="position: fixed; left: -9999px; top: 0;">
+        <!-- Content will be populated dynamically -->
+    </div>
+
+    <!-- Verification Page (Hidden, for Naya Blue to verify orders) -->
+    <div id="verificationPage"
+        style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;padding:2rem;overflow-y:auto;">
+        <div style="max-width:600px;margin:0 auto;background:white;padding:2rem;border-radius:15px;">
+            <h3 style="color:#5a7a96;text-align:center;margin-bottom:0.5rem;">
+                <i class="fas fa-shield-check"></i> Verificar Pedido
+            </h3>
+            <p style="text-align:center;color:#6B7280;margin-bottom:1.5rem;font-size:0.9rem;">
+                Digite o número do pedido para verificar sua autenticidade
+            </p>
+            <input type="text" id="verifyInput" placeholder="Ex: NAY123456"
+                style="width:100%;padding:1rem;font-size:1.2rem;border:2px solid #E5E7EB;border-radius:10px;text-align:center;letter-spacing:2px;font-family:'Courier New',monospace;text-transform:uppercase;margin-bottom:1rem;"
+                onkeypress="if(event.key==='Enter') verifyOrder()">
+            <button onclick="verifyOrder()"
+                style="width:100%;padding:1rem;background:#7697b7;color:white;border:none;border-radius:10px;font-weight:bold;font-size:1rem;cursor:pointer;margin-bottom:0.75rem;">
+                <i class="fas fa-search"></i> Verificar Pedido
+            </button>
+            <button onclick="closeVerification()"
+                style="width:100%;padding:0.75rem;background:transparent;color:#6B7280;border:1px solid #E5E7EB;border-radius:10px;cursor:pointer;">
+                Fechar
+            </button>
+            <div id="verifyResult" style="margin-top:1.5rem;"></div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h4><i class="fas fa-shopping-cart"></i> Meu Carrinho</h4>
+            <button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="text-center text-muted">Seu carrinho está vazio</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                Total: <span id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">
+                <i class="fab fa-whatsapp"></i> Finalizar Pedido
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Call to Action -->
+    <section class="cart-cta">
+        <div class="container">
+            <div class="cart-cta-content">
+                <div class="cart-cta-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <h3>Pronta para Finalizar suas Compras?</h3>
+                <p id="cartCtaText">Você tem itens esperando no carrinho!</p>
+                <button class="btn-go-cart" onclick="toggleCart()">
+                    <span class="icon-wrapper">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                    <span class="text-wrapper">
+                        Ver Meu Carrinho
+                        <span class="cart-items-count" id="cartCtaCount" style="display: none;">0</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <!-- Logo no rodapé -->
+                        <img src="logo-naya-blue.png" alt="Naya Blue" style="height: 60px; margin-right: 15px; filter: brightness(0) invert(1);">
+                        <div>
+                            <h5 style="margin: 0; font-size: 1.5rem; letter-spacing: 3px;">NAYA BLUE</h5>
+                            <small style="opacity: 0.8; letter-spacing: 2px;">ELEGÂNCIA & ESTILO</small>
+                        </div>
+                    </div>
+                    <p>Sua loja de confiança para joias, moda e beleza</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contato</h5>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:nayabluemarca@gmail.com" style="color:inherit;">nayabluemarca@gmail.com</a></p>
+                    <p><i class="fas fa-phone"></i> (91) 99377-7788</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Redes Sociais</h5>
+                    <div class="social-links">
+                        <a href="https://instagram.com/usenayablue" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5591993777788" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <button onclick="openVerification()"
+                        style="background: #10B981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 50px; margin-top: 1rem; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.3s; box-shadow: 0 2px 8px rgba(16,185,129,0.3);"
+                        onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10B981'">
+                        <i class="fas fa-shield-check"></i> Verificar Pedido
+                    </button>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 2rem 0 1rem;">
+            <div class="text-center">
+                <p>&copy; 2026 Naya Blue. Todos os direitos reservados.</p>
+                <p style="margin-top:0.4rem; font-size:0.78rem; opacity:0.6; letter-spacing:0.5px;">
+                    Desenvolvido por
+                    <a href="https://wa.me/5591983668401" target="_blank"
+                       style="color:inherit; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.35); padding-bottom:1px; transition:opacity 0.2s;"
+                       onmouseover="this.style.opacity='1';this.style.borderBottomColor='rgba(255,255,255,0.8)'"
+                       onmouseout="this.style.opacity='';this.style.borderBottomColor='rgba(255,255,255,0.35)'">
+                        Alan Gomes
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5591993777788?text=Olá! Gostaria de mais informações" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

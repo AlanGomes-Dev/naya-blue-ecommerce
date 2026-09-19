@@ -1,0 +1,14 @@
+# Sistema operacional
+Thumbs.db
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+
+# Dependências
+node_modules/
+
+# Arquivos sensíveis
+.env
+.env.*
