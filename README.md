@@ -6,6 +6,20 @@ E-commerce desenvolvido para a Naya Blue com foco em experiência do usuário, c
 
 **Site:** https://nayablue.netlify.app/
 
+## 🖥️ Interface do projeto
+
+### Página inicial
+
+![Página inicial](docs/images/01-home.png)
+
+### Catálogo de produtos
+
+![Catálogo de produtos](docs/images/02-produtos.png)
+
+### Carrinho de compras
+
+![Carrinho de compras](docs/images/03-carrinho.png)
+
 ## 📋 Sobre o projeto
 
 O Naya Blue foi desenvolvido como uma solução de e-commerce para apresentação dos produtos e recebimento de pedidos.
